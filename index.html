@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>농업노동자 기숙사 건축전문가 자문 플랫폼</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --font:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --bg:#F2F4F1; --surface:#FFFFFF; --ink:#1C2621; --muted:#5E6A63; --line:#D5DCD7;
+  --green:#2B5D42; --green-soft:#E1ECE4; --amber:#8C5F17; --amber-soft:#F6EBD6; --red:#A3322B;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#121815; --surface:#1A221E; --ink:#E5ECE7; --muted:#9BA8A0; --line:#2D3832;
+    --green:#7CC59A; --green-soft:#1F3328; --amber:#E2B666; --amber-soft:#3A2E17; --red:#F08A80;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.6;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);word-break:keep-all}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+[hidden]{display:none !important}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+
+/* 머리말 */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{padding-top:28px;padding-bottom:4px}
+.program{margin:0;color:var(--green);font-weight:600;font-size:14px}
+h1{margin:2px 0 6px;font-size:clamp(24px,5vw,30px);line-height:1.3;letter-spacing:-0.02em}
+.sub{margin:0 0 18px;color:var(--muted);font-size:15px;max-width:56ch}
+.tabs{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{background:none;border:0;padding:12px 0;white-space:nowrap;color:var(--muted);font-weight:500;border-bottom:3px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);font-weight:700;border-color:var(--green)}
+.tabs small{font-size:12px;font-weight:500;color:var(--muted);margin-left:3px}
+
+/* 본문 */
+main{padding:28px 0 64px}
+.panel h2{font-size:20px;margin:0 0 4px;letter-spacing:-0.01em}
+.panel .desc{color:var(--muted);margin:0 0 20px;font-size:15px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px}
+.notice{background:var(--amber-soft);color:var(--amber);border-radius:8px;padding:12px 14px;font-size:14px;margin-bottom:20px}
+
+/* 인증 */
+.gate-row{display:flex;gap:8px}
+.gate-row input{flex:1;min-width:0;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+.verified{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;background:var(--green-soft);border-radius:8px;margin-bottom:22px;font-size:15px}
+.verified strong{color:var(--green)}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:14px;padding:0;white-space:nowrap}
+
+/* 입력 */
+.field{margin-bottom:20px}
+.field > label,.field > .label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+.field .hint{font-weight:400;color:var(--muted);font-size:13px;margin-left:4px}
+input[type=text],input[type=password],select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+textarea{min-height:110px;resize:vertical;line-height:1.55}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;inset:0}
+.seg span{display:block;padding:9px 18px;border-right:1px solid var(--line);background:var(--surface)}
+.seg label:last-child span{border-right:0}
+.seg input:checked + span{background:var(--ink);color:var(--surface);font-weight:600}
+.seg input:focus-visible + span{outline:2px solid var(--green);outline-offset:-2px}
+.seg input:disabled + span{opacity:.4}
+.pair{display:flex;gap:28px;flex-wrap:wrap}
+
+/* 사업 단계 선택: 공정 순서를 그대로 보여주는 막대 */
+.stages{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.stages label{position:relative;cursor:pointer}
+.stages input{position:absolute;opacity:0;inset:0}
+.stages span{display:block;text-align:center;font-size:13px;padding:9px 2px 7px;border-top:5px solid var(--line);color:var(--muted);white-space:nowrap}
+.stages input:checked + span{border-color:var(--green);color:var(--ink);font-weight:700;background:var(--green-soft)}
+.stages input:focus-visible + span{outline:2px solid var(--green);outline-offset:-2px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted)}
+.check input{margin-top:4px;width:18px;height:18px;flex:none}
+
+.btn{border:0;border-radius:8px;padding:12px 20px;background:var(--green);color:#fff;font-weight:700}
+@media (prefers-color-scheme:dark){.btn{color:#0E1A13}}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.line{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.err{color:var(--red);font-size:14px;margin:8px 0 0;min-height:1em}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+
+/* 완료 */
+.done h3{margin:0 0 6px;font-size:19px}
+.done .num{font-weight:700;color:var(--green)}
+.done p{margin:0 0 14px}
+.survey{display:flex;gap:8px;margin:6px 0 18px}
+.survey input{flex:1;min-width:0;font-size:14px}
+
+/* 내역 */
+.summary{color:var(--muted);font-size:14px;margin:0 0 14px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:12px}
+.item-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.item-title{font-weight:700}
+.item-meta{color:var(--muted);font-size:13px}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-right:6px}
+.badge.done{background:var(--green-soft);color:var(--green)}
+.badge.wait{background:var(--amber-soft);color:var(--amber)}
+.qa{margin:12px 0 0;display:grid;grid-template-columns:72px 1fr;gap:6px 12px;font-size:15px}
+.qa dt{color:var(--muted);font-size:14px}
+.qa dd{margin:0;white-space:pre-wrap}
+.item a{color:var(--green);font-weight:600;font-size:14px}
+.empty{color:var(--muted);text-align:center;padding:36px 12px}
+
+/* FAQ */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.chips button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:14px}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink);font-weight:600}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+summary{cursor:pointer;padding:15px 18px;font-weight:600;list-style:none;display:flex;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary .st{color:var(--green);font-size:13px;font-weight:700;flex:none;width:56px;padding-top:2px}
+details[open] summary{border-bottom:1px solid var(--line)}
+.faq-a{padding:14px 18px 16px 86px;white-space:pre-wrap}
+.faq-a small{display:block;color:var(--muted);margin-top:8px}
+
+footer{color:var(--muted);font-size:13px;text-align:center;padding:0 20px 32px}
+
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .card{padding:18px 16px}
+  .stages{grid-template-columns:repeat(4,1fr);row-gap:6px}
+  .qa{grid-template-columns:1fr;gap:2px}
+  .qa dd{margin-bottom:8px}
+  .faq-a{padding:12px 16px 14px}
+  summary .st{width:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="program">농업노동자 기숙사 건립지원사업</p>
+    <h1>건축전문가 자문 플랫폼</h1>
+    <p class="sub">전문가 자문 기록과 지자체 수시자문 신청을 한곳에 모읍니다. 등록된 내용은 농정원이 함께 확인합니다.</p>
+    <nav class="tabs" role="tablist" aria-label="메뉴">
+      <button role="tab" aria-selected="true" data-tab="record">자문 기록<small>전문가</small></button>
+      <button role="tab" aria-selected="false" data-tab="request">수시자문 신청<small>지자체</small></button>
+      <button role="tab" aria-selected="false" data-tab="history">우리 지자체 내역<small>지자체</small></button>
+      <button role="tab" aria-selected="false" data-tab="faq">단계별 FAQ</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="notice" id="setupNotice" hidden>아직 저장 서버가 연결되지 않았습니다. index.html의 API_URL에 Apps Script 웹 앱 주소를 넣어주세요.</div>
+
+  <!-- 1. 자문 기록 (전문가) -->
+  <section class="panel" id="tab-record" role="tabpanel">
+    <h2>자문 기록</h2>
+    <p class="desc">전화·메일로 진행한 자문을 기록하세요. 지자체의 수시자문 신청 건에 답변할 수도 있습니다.</p>
+    <div class="card">
+      <div class="gate" data-role="expert"></div>
+
+      <form id="recordForm" hidden novalidate>
+        <div class="verified"><span><strong id="expertName"></strong> 전문가로 확인되었습니다.</span>
+          <button type="button" class="linkbtn" data-reset="expert">다른 코드 입력</button></div>
+
+        <div class="field">
+          <label for="r-region">지자체</label>
+          <select id="r-region" name="region" required></select>
+        </div>
+        <div class="field" id="r-reqWrap" hidden>
+          <label for="r-request">수시자문 신청 건<span class="hint">답변할 신청 건을 고르면 내용이 채워집니다</span></label>
+          <select id="r-request" name="requestId"></select>
+        </div>
+        <div class="field pair">
+          <div><span class="label">자문유형</span>
+            <div class="seg" role="radiogroup" aria-label="자문유형">
+              <label><input type="radio" name="type" value="정기" checked><span>정기</span></label>
+              <label><input type="radio" name="type" value="수시"><span>수시</span></label>
+            </div></div>
+          <div><span class="label">자문방식</span>
+            <div class="seg" role="radiogroup" aria-label="자문방식">
+              <label><input type="radio" name="method" value="전화" checked><span>전화</span></label>
+              <label><input type="radio" name="method" value="메일"><span>메일</span></label>
+            </div></div>
+        </div>
+        <div class="field"><span class="label">사업단계</span><div class="stages" data-name="stage"></div></div>
+        <div class="field">
+          <label for="r-topic">주제</label>
+          <select id="r-topic" name="topic" class="topics"></select>
+        </div>
+        <div class="field">
+          <label for="r-question">질의내용</label>
+          <textarea id="r-question" name="question" maxlength="5000" required placeholder="지자체가 문의한 내용"></textarea>
+        </div>
+        <div class="field">
+          <label for="r-answer">답변요지</label>
+          <textarea id="r-answer" name="answer" maxlength="5000" required placeholder="전문가 답변의 핵심 내용"></textarea>
+        </div>
+        <div class="field">
+          <label for="r-follow">후속조치<span class="hint">선택</span></label>
+          <textarea id="r-follow" name="followUp" maxlength="5000" style="min-height:80px" placeholder="추가 검토, 자료 요청, 다음 자문 일정 등"></textarea>
+        </div>
+        <div class="actions"><button class="btn" type="submit">자문 기록 저장</button></div>
+        <p class="err" id="recordErr"></p>
+      </form>
+
+      <div class="done" id="recordDone" hidden></div>
+    </div>
+  </section>
+
+  <!-- 2. 수시자문 신청 (지자체) -->
+  <section class="panel" id="tab-request" role="tabpanel" hidden>
+    <h2>수시자문 신청</h2>
+    <p class="desc">궁금한 점을 남기면 배정된 건축 전문가가 전화나 메일로 답변합니다.</p>
+    <div class="card">
+      <div class="gate" data-role="local"></div>
+
+      <form id="requestForm" hidden novalidate>
+        <div class="verified"><span><strong class="localName"></strong> 담당자로 확인되었습니다.</span>
+          <button type="button" class="linkbtn" data-reset="local">다른 코드 입력</button></div>
+
+        <div class="field"><span class="label">현재 사업단계</span><div class="stages" data-name="stage"></div></div>
+        <div class="field">
+          <label for="q-topic">주제</label>
+          <select id="q-topic" name="topic" class="topics"></select>
+        </div>
+        <div class="field">
+          <label for="q-question">질의내용</label>
+          <textarea id="q-question" name="question" maxlength="5000" required placeholder="상황과 궁금한 점을 구체적으로 적어주세요. 도면이나 자료가 있다면 메일로 회신받을 때 함께 보내주세요."></textarea>
+        </div>
+        <div class="field"><span class="label">희망 회신 방식</span>
+          <div class="seg" role="radiogroup" aria-label="희망 회신 방식">
+            <label><input type="radio" name="method" value="전화" checked><span>전화</span></label>
+            <label><input type="radio" name="method" value="메일"><span>메일</span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="q-contact">회신받을 연락처</label>
+          <input type="text" id="q-contact" name="contact" maxlength="100" required placeholder="전화번호 또는 이메일">
+        </div>
+        <div class="field">
+          <label class="check"><input type="checkbox" name="consent" required>
+            <span>자문 회신을 위해 연락처를 수집·이용하는 데 동의합니다. 수집한 연락처는 시범운영 기간 동안 자문 회신 목적으로만 사용합니다.</span></label>
+        </div>
+        <div class="actions"><button class="btn" type="submit">수시자문 신청</button></div>
+        <p class="err" id="requestErr"></p>
+      </form>
+
+      <div class="done" id="requestDone" hidden></div>
+    </div>
+  </section>
+
+  <!-- 3. 우리 지자체 내역 -->
+  <section class="panel" id="tab-history" role="tabpanel" hidden>
+    <h2>우리 지자체 자문 내역</h2>
+    <p class="desc">인증코드를 입력하면 우리 지자체의 자문 기록만 보입니다.</p>
+    <div class="card gate-card"><div class="gate" data-role="local"></div></div>
+    <div id="historyBox" hidden>
+      <div class="verified"><span><strong class="localName"></strong> 자문 내역</span>
+        <span><button type="button" class="linkbtn" id="historyReload">새로고침</button>
+        <button type="button" class="linkbtn" data-reset="local" style="margin-left:10px">다른 코드 입력</button></span></div>
+      <p class="summary" id="historySummary"></p>
+      <div id="historyList"></div>
+    </div>
+  </section>
+
+  <!-- 4. 단계별 FAQ -->
+  <section class="panel" id="tab-faq" role="tabpanel" hidden>
+    <h2>사업 단계별 FAQ</h2>
+    <p class="desc">자주 묻는 질문을 사업 단계별로 모았습니다. 최종 판단은 사업지침과 관할 인허가권자 확인이 필요합니다.</p>
+    <div class="chips" id="faqChips"></div>
+    <div id="faqList"><p class="empty">불러오는 중입니다…</p></div>
+  </section>
+</main>
+
+<footer>농업노동자 기숙사 건립지원사업 건축전문가 자문 시범운영</footer>
+
+<script>
+/* ===== 설정: Apps Script 웹 앱 배포 주소로 바꾸세요 ===== */
+const API_URL = "https://script.google.com/macros/s/AKfycbwZ_FyVlAQ8TodmxpxrKqKnVbe_T6M2VP6DKY-pFgkduW6YROisZu3rTtIbTDduGACGOw/exec";
+
+const STAGES = ["기본계획", "부지확보", "설계", "인허가", "착공", "준공", "운영"];
+const TOPICS = ["예산·보조금", "부지·농지", "설계", "인허가", "소방·안전", "시공", "운영관리", "기타"];
+const state = { expert: null, local: null };
+const $ = (s, root = document) => root.querySelector(s);
+const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
+const configured = !API_URL.includes("배포ID");
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+async function api(action, data = {}) {
+  if (!configured) throw new Error("저장 서버가 아직 연결되지 않았습니다.");
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({ action, ...data })
+  });
+  const json = await res.json();
+  if (!json.ok) throw new Error(json.error || "처리하지 못했습니다.");
+  return json;
+}
+
+/* ----- 공통 입력 요소 채우기 ----- */
+$$(".stages").forEach((box, n) => {
+  box.setAttribute("role", "radiogroup");
+  box.setAttribute("aria-label", "사업단계");
+  box.innerHTML = STAGES.map((s, i) =>
+    `<label><input type="radio" name="${box.dataset.name}" value="${s}" ${i === 0 ? "checked" : ""}><span>${s}</span></label>`).join("");
+});
+$$(".topics").forEach(sel => { sel.innerHTML = TOPICS.map(t => `<option>${t}</option>`).join(""); });
+if (!configured) $("#setupNotice").hidden = false;
+
+/* ----- 탭 ----- */
+let faqLoaded = false;
+$$(".tabs button").forEach(btn => btn.addEventListener("click", () => {
+  $$(".tabs button").forEach(b => b.setAttribute("aria-selected", b === btn));
+  $$(".panel").forEach(p => p.hidden = p.id !== "tab-" + btn.dataset.tab);
+  if (btn.dataset.tab === "faq" && !faqLoaded) loadFaq();
+  if (btn.dataset.tab === "history" && state.local) loadHistory();
+}));
+
+/* ----- 인증코드 ----- */
+$$(".gate").forEach(gate => {
+  const role = gate.dataset.role;
+  gate.innerHTML = `
+    <form class="gate-form" novalidate>
+      <label class="field" style="display:block;margin-bottom:0">
+        <span class="label" style="display:block;font-weight:600;margin-bottom:6px">${role === "expert" ? "전문가 인증코드" : "지자체 인증코드"}</span>
+        <div class="gate-row">
+          <input type="password" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="농정원에서 받은 코드" required>
+          <button class="btn" type="submit">확인</button>
+        </div>
+      </label>
+      <p class="err"></p>
+    </form>`;
+  const form = $("form", gate);
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const code = form.code.value.trim().toUpperCase();
+    const err = $(".err", form), btn = $("button", form);
+    err.textContent = "";
+    if (!code) { err.textContent = "인증코드를 입력해주세요."; return; }
+    btn.disabled = true; btn.textContent = "확인 중";
+    try {
+      const r = await api("verify", { code });
+      if (r.role !== role) throw new Error(role === "expert" ? "전문가 인증코드가 아닙니다." : "지자체 인증코드가 아닙니다.");
+      form.code.value = "";
+      state[role] = { code, ...r };
+      applyState();
+    } catch (ex) { err.textContent = ex.message; }
+    finally { btn.disabled = false; btn.textContent = "확인"; }
+  });
+});
+
+$$("[data-reset]").forEach(b => b.addEventListener("click", () => { state[b.dataset.reset] = null; applyState(); }));
+
+function applyState() {
+  const ex = state.expert, lo = state.local;
+  $$('.gate[data-role="expert"]').forEach(g => g.hidden = !!ex);
+  $$('.gate[data-role="local"]').forEach(g => g.hidden = !!lo);
+  $(".gate-card").hidden = !!lo;
+
+  $("#recordForm").hidden = !ex || !$("#recordDone").hidden;
+  if (!ex) $("#recordDone").hidden = true;
+  if (ex) { $("#expertName").textContent = ex.name; fillRegions(); }
+
+  $("#requestForm").hidden = !lo || !$("#requestDone").hidden;
+  if (!lo) $("#requestDone").hidden = true;
+  $$(".localName").forEach(s => s.textContent = lo ? lo.name : "");
+  $("#historyBox").hidden = !lo;
+  if (lo && !$("#tab-history").hidden) loadHistory();
+}
+
+/* ===== 1. 자문 기록 ===== */
+const rf = $("#recordForm");
+
+function fillRegions() {
+  const ex = state.expert, keep = rf.region.value;
+  rf.region.innerHTML = `<option value="">지자체 선택</option>` +
+    ex.regions.map(n => `<option ${n === keep ? "selected" : ""}>${esc(n)}</option>`).join("");
+  fillRequests();
+}
+
+function fillRequests() {
+  const list = state.expert.requests.filter(q => q.region === rf.region.value);
+  $("#r-reqWrap").hidden = !list.length;
+  rf.requestId.innerHTML = `<option value="">연결하지 않음 (새 자문 기록)</option>` +
+    list.map(q => `<option value="${esc(q.id)}">${esc(q.date.slice(5, 10))} ${esc(q.topic)} — ${esc(q.question.slice(0, 40))}</option>`).join("");
+  setTypeLock(false);
+}
+
+function setTypeLock(locked) {
+  $$('input[name="type"]', rf).forEach(r => {
+    if (locked) r.checked = r.value === "수시";
+    r.disabled = locked && r.value === "정기";
+  });
+}
+
+rf.region.addEventListener("change", fillRequests);
+rf.requestId.addEventListener("change", () => {
+  const q = state.expert.requests.find(x => x.id === rf.requestId.value);
+  if (q) {
+    $$('input[name="stage"]', rf).forEach(r => r.checked = r.value === q.stage);
+    rf.topic.value = q.topic;
+    rf.question.value = q.question;
+    setTypeLock(true);
+  } else {
+    rf.question.value = "";
+    setTypeLock(false);
+  }
+});
+
+rf.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = $("#recordErr"), btn = $("button[type=submit]", rf);
+  err.textContent = "";
+  const f = new FormData(rf);
+  const data = {
+    region: f.get("region"), requestId: f.get("requestId") || "",
+    type: f.get("requestId") ? "수시" : f.get("type"), method: f.get("method"),
+    stage: f.get("stage"), topic: f.get("topic"),
+    question: (f.get("question") || "").trim(), answer: (f.get("answer") || "").trim(), followUp: (f.get("followUp") || "").trim()
+  };
+  if (!data.region) { err.textContent = "지자체를 선택해주세요."; rf.region.focus(); return; }
+  if (!data.question) { err.textContent = "질의내용을 입력해주세요."; rf.question.focus(); return; }
+  if (!data.answer) { err.textContent = "답변요지를 입력해주세요."; rf.answer.focus(); return; }
+
+  btn.disabled = true; btn.textContent = "저장 중";
+  try {
+    const r = await api("record", { code: state.expert.code, ...data });
+    if (data.requestId) state.expert.requests = state.expert.requests.filter(q => q.id !== data.requestId);
+    showRecordDone(r, data.region);
+  } catch (ex) { err.textContent = ex.message; }
+  finally { btn.disabled = false; btn.textContent = "자문 기록 저장"; }
+});
+
+function showRecordDone(r, region) {
+  let survey = "";
+  if (r.surveyUrl && r.emailed) {
+    survey = `<p>${esc(region)} 담당자에게 만족도조사 안내 메일을 보냈습니다.</p>`;
+  } else if (r.surveyUrl) {
+    survey = `<p>아래 만족도조사 링크를 ${esc(region)} 담당자에게 전달해주세요.</p>
+      <div class="survey"><input type="text" readonly value="${esc(r.surveyUrl)}" aria-label="만족도조사 링크"><button type="button" class="btn line copy">링크 복사</button></div>`;
+  }
+  const box = $("#recordDone");
+  box.innerHTML = `<h3>자문이 기록되었습니다</h3>
+    <p>자문번호 <span class="num">${esc(r.id)}</span></p>${survey}
+    <div class="actions"><button type="button" class="btn" id="recordAgain">새 자문 기록하기</button></div>`;
+  box.hidden = false; rf.hidden = true;
+  bindCopy(box);
+  $("#recordAgain").addEventListener("click", () => {
+    ["question", "answer", "followUp"].forEach(n => rf[n].value = "");
+    rf.requestId.value = "";
+    box.hidden = true; rf.hidden = false;
+    fillRequests();
+    window.scrollTo({ top: 0 });
+  });
+}
+
+function bindCopy(root) {
+  const b = $(".copy", root);
+  if (!b) return;
+  b.addEventListener("click", async () => {
+    const input = $("input", b.parentElement);
+    try { await navigator.clipboard.writeText(input.value); }
+    catch { input.select(); document.execCommand("copy"); }
+    b.textContent = "복사됨";
+    setTimeout(() => b.textContent = "링크 복사", 1500);
+  });
+}
+
+/* ===== 2. 수시자문 신청 ===== */
+const qf = $("#requestForm");
+qf.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = $("#requestErr"), btn = $("button[type=submit]", qf);
+  err.textContent = "";
+  const f = new FormData(qf);
+  const data = {
+    stage: f.get("stage"), topic: f.get("topic"), method: f.get("method"),
+    question: (f.get("question") || "").trim(), contact: (f.get("contact") || "").trim(), consent: qf.consent.checked
+  };
+  if (!data.question) { err.textContent = "질의내용을 입력해주세요."; qf.question.focus(); return; }
+  if (!data.contact) { err.textContent = "회신받을 연락처를 입력해주세요."; qf.contact.focus(); return; }
+  if (!data.consent) { err.textContent = "개인정보 수집·이용에 동의해주세요."; return; }
+
+  btn.disabled = true; btn.textContent = "신청 중";
+  try {
+    const r = await api("request", { code: state.local.code, ...data });
+    const box = $("#requestDone");
+    box.innerHTML = `<h3>수시자문 신청이 접수되었습니다</h3>
+      <p>접수번호 <span class="num">${esc(r.id)}</span></p>
+      <p>배정된 전문가가 남겨주신 연락처로 ${data.method === "전화" ? "전화" : "메일"} 회신합니다. 진행 상황은 ‘우리 지자체 내역’에서 확인할 수 있습니다.</p>
+      <div class="actions"><button type="button" class="btn" id="requestAgain">추가로 신청하기</button>
+      <button type="button" class="btn line" id="goHistory">내역 보기</button></div>`;
+    box.hidden = false; qf.hidden = true;
+    qf.question.value = "";
+    $("#requestAgain").addEventListener("click", () => { box.hidden = true; qf.hidden = false; });
+    $("#goHistory").addEventListener("click", () => { box.hidden = true; qf.hidden = false; $('.tabs [data-tab="history"]').click(); });
+  } catch (ex) { err.textContent = ex.message; }
+  finally { btn.disabled = false; btn.textContent = "수시자문 신청"; }
+});
+
+/* ===== 3. 우리 지자체 내역 ===== */
+$("#historyReload").addEventListener("click", loadHistory);
+
+async function loadHistory() {
+  if (!state.local) return;
+  const list = $("#historyList");
+  list.innerHTML = `<p class="empty">불러오는 중입니다…</p>`;
+  try {
+    const r = await api("history", { code: state.local.code });
+    const done = r.items.filter(i => i.status === "완료").length;
+    $("#historySummary").textContent = `전체 ${r.items.length}건, 완료 ${done}건, 답변 대기 ${r.items.length - done}건`;
+    if (!r.items.length) {
+      list.innerHTML = `<p class="empty">아직 기록된 자문이 없습니다. ‘수시자문 신청’에서 궁금한 점을 남겨보세요.</p>`;
+      return;
+    }
+    list.innerHTML = r.items.map(i => `
+      <article class="item">
+        <div class="item-top">
+          <span class="item-title"><span class="badge ${i.status === "완료" ? "done" : "wait"}">${i.status === "완료" ? "완료" : "답변 대기"}</span>${esc(i.stage)} 단계, ${esc(i.topic)}</span>
+          <span class="item-meta">${esc(i.date.slice(0, 10))} ${esc(i.type)}자문 ${i.expert ? "/ " + esc(i.expert) + " 전문가" : ""}</span>
+        </div>
+        <dl class="qa">
+          <dt>질의</dt><dd>${esc(i.question)}</dd>
+          ${i.answer ? `<dt>답변</dt><dd>${esc(i.answer)}</dd>` : ""}
+          ${i.followUp ? `<dt>후속조치</dt><dd>${esc(i.followUp)}</dd>` : ""}
+        </dl>
+        ${i.surveyUrl ? `<p style="margin:12px 0 0"><a href="${esc(i.surveyUrl)}" target="_blank" rel="noopener">이 자문 만족도조사 참여하기</a></p>` : ""}
+      </article>`).join("");
+  } catch (ex) {
+    list.innerHTML = `<p class="empty">${esc(ex.message)}</p>`;
+  }
+}
+
+/* ===== 4. FAQ ===== */
+let faqItems = [], faqStage = "전체";
+
+async function loadFaq() {
+  faqLoaded = true;
+  const list = $("#faqList");
+  if (!configured) { list.innerHTML = `<p class="empty">저장 서버가 연결되면 FAQ가 표시됩니다.</p>`; return; }
+  try {
+    const res = await fetch(API_URL + "?action=faq");
+    const json = await res.json();
+    if (!json.ok) throw new Error();
+    faqItems = json.items;
+    renderFaq();
+  } catch {
+    faqLoaded = false;
+    list.innerHTML = `<p class="empty">FAQ를 불러오지 못했습니다. 잠시 후 다시 열어주세요.</p>`;
+  }
+}
+
+function renderFaq() {
+  const chips = ["전체", ...STAGES];
+  $("#faqChips").innerHTML = chips.map(s => {
+    const n = s === "전체" ? faqItems.length : faqItems.filter(i => i.stage === s).length;
+    return `<button type="button" aria-pressed="${s === faqStage}" data-stage="${s}">${s} ${n}</button>`;
+  }).join("");
+  $$("#faqChips button").forEach(b => b.addEventListener("click", () => { faqStage = b.dataset.stage; renderFaq(); }));
+
+  const items = faqStage === "전체" ? faqItems : faqItems.filter(i => i.stage === faqStage);
+  $("#faqList").innerHTML = items.length ? items.map(i => `
+    <details>
+      <summary><span class="st">${esc(i.stage)}</span><span>${esc(i.q)}</span></summary>
+      <div class="faq-a">${esc(i.a)}${i.basis ? `<small>근거: ${esc(i.basis)}</small>` : ""}</div>
+    </details>`).join("")
+    : `<p class="empty">이 단계에 등록된 FAQ가 아직 없습니다. 궁금한 점은 ‘수시자문 신청’으로 남겨주세요.</p>`;
+}
+</script>
+</body>
+</html>
